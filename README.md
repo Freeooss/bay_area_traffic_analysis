@@ -1,8 +1,14 @@
 # Bay Area Traffic Analysis & Speed Predictor
 
-A data science and machine learning project analyzing real-world I-280 North traffic patterns in the San Francisco Bay Area using Caltrans PeMS traffic sensor data.
+A data science and machine learning project analyzing I-280 North traffic patterns using Caltrans PeMS data.
 
-The project explores traffic patterns by time, location, and traffic flow, and includes an interactive Streamlit application that uses a trained machine learning model to estimate traffic speed.
+## Live Application
+
+Try the interactive traffic speed predictor:
+
+**[Launch Traffic Speed Predictor](https://freooss-bay-area-traffic.streamlit.app/)**
+
+The application uses a trained Random Forest regression model to estimate traffic speed based on traffic flow and time of day.
 
 ---
 
@@ -117,10 +123,13 @@ The problem is treated as a **regression problem** because the prediction target
 
 ### Input Features
 
-The initial model uses:
+The current model uses:
 
 - Hour of day
-- Traffic flow
+- Weekday/weekend status
+
+These features allow the model to learn differences between
+typical weekday commuting patterns and weekend traffic patterns.
 
 ### Prediction Target
 
@@ -147,22 +156,25 @@ Model performance is evaluated using:
 
 ## Interactive Traffic Speed Predictor
 
-The trained Random Forest model is integrated into an interactive web application built with Streamlit.
+The trained Random Forest model is integrated into an
+interactive web application built with Streamlit.
 
-Users can provide traffic conditions such as:
+Users select:
 
-- Hour of day
-- Traffic flow
+- Time of day
+- Weekday or weekend
 
-The application sends these values to the trained machine learning model and displays the estimated I-280 North traffic speed.
+The application uses these inputs to estimate typical
+I-280 North traffic speed based on patterns learned from
+historical Caltrans PeMS traffic data.
 
-The application demonstrates a basic machine learning deployment workflow:
+The application demonstrates the following workflow:
 
-**User Input → Streamlit Interface → Trained Model → Speed Prediction**
+**User Input → Feature Processing → Random Forest Model → Speed Prediction**
 
-> **Note:** The current application is a traffic speed estimator rather than a true future traffic forecasting system because traffic flow is provided as an input.
-
-A future version could estimate traffic conditions using historical traffic patterns, time, location, weather, and other features without requiring current traffic flow as a manual input.
+> **Note:** Predictions represent patterns learned from a limited
+> historical dataset and should not be interpreted as real-time
+> traffic information.
 
 ---
 
