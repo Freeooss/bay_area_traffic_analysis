@@ -31,7 +31,7 @@ st.caption(
 
 
 # -----------------------------
-# User input
+# Day type input
 # -----------------------------
 
 day_type = st.selectbox(
@@ -39,80 +39,91 @@ day_type = st.selectbox(
     ["Weekday", "Weekend"]
 )
 
-hour = st.slider(
-    "Hour of Day",
-    min_value=0,
-    max_value=23,
-    value=17
+is_weekend = 1 if day_type == "Weekend" else 0
+
+
+# -----------------------------
+# Time input
+# -----------------------------
+
+time_options = []
+
+for hour in range(24):
+
+    if hour == 0:
+        label = "12 AM"
+
+    elif hour < 12:
+        label = f"{hour} AM"
+
+    elif hour == 12:
+        label = "12 PM"
+
+    else:
+        label = f"{hour - 12} PM"
+
+    time_options.append(label)
+
+
+selected_time = st.select_slider(
+    "Time of Day",
+    options=time_options,
+    value="5 PM"
 )
 
-display_hour = pd.Timestamp(
-    year=2026,
-    month=1,
-    day=1,
-    hour=hour
-).strftime("%I %p")
 
-st.caption(f"Selected time: {display_hour}")
+# Convert display time back to 0-23 hour
 
-
-# Convert user selection into model input
-
-is_weekend = (
-    1 if day_type == "Weekend" else 0
-)
+hour = time_options.index(selected_time)
 
 
 # -----------------------------
 # Prediction
 # -----------------------------
 
-if st.button("Predict Speed"):
+input_data = pd.DataFrame({
+    "hour": [hour],
+    "is_weekend": [is_weekend]
+})
 
-    input_data = pd.DataFrame({
-        "hour": [hour],
-        "is_weekend": [is_weekend]
-    })
-
-    predicted_speed = model.predict(
-        input_data
-    )[0]
+predicted_speed = model.predict(
+    input_data
+)[0]
 
 
-    # -------------------------
-    # Display result
-    # -------------------------
+# -----------------------------
+# Traffic condition
+# -----------------------------
 
-    st.subheader(
-        "Predicted Traffic Speed"
-    )
+if predicted_speed >= 60:
+    condition = "🟢 Free Flow"
 
-    st.metric(
-        label="Estimated Speed",
-        value=f"{predicted_speed:.1f} mph"
-    )
+elif predicted_speed >= 50:
+    condition = "🟡 Moderate Traffic"
 
+elif predicted_speed >= 40:
+    condition = "🟠 Congested"
 
-    # -------------------------
-    # Traffic condition
-    # -------------------------
-
-    if predicted_speed >= 60:
-        condition = "🟢 Free Flow"
-
-    elif predicted_speed >= 50:
-        condition = "🟡 Moderate Traffic"
-
-    elif predicted_speed >= 40:
-        condition = "🟠 Congested"
-
-    else:
-        condition = "🔴 Heavy Congestion"
+else:
+    condition = "🔴 Heavy Congestion"
 
 
-    st.write(
-        f"Traffic condition: **{condition}**"
-    )
+# -----------------------------
+# Display result automatically
+# -----------------------------
+
+st.divider()
+
+st.subheader("Predicted Traffic Speed")
+
+st.metric(
+    label=f"{day_type} at {selected_time}",
+    value=f"{predicted_speed:.1f} mph"
+)
+
+st.write(
+    f"Traffic condition: **{condition}**"
+)
 
 
 # -----------------------------
