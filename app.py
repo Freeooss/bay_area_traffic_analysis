@@ -23,8 +23,8 @@ hour = st.slider(
 flow = st.slider(
     "Traffic Flow (vehicles / 5 min)",
     min_value=0,
-    max_value=200,
-    value=80
+    max_value=550,
+    value=200
 )
 
 # Prediction
