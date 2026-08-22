@@ -1,8 +1,14 @@
 # Bay Area Traffic Analysis & Speed Predictor
 
-A data science and machine learning project analyzing real-world I-280 North traffic patterns in the San Francisco Bay Area using Caltrans PeMS traffic sensor data.
+A data science and machine learning project analyzing I-280 North traffic patterns using Caltrans PeMS data.
 
-The project explores traffic patterns by time, location, and traffic flow, and includes an interactive Streamlit application that uses a trained machine learning model to estimate traffic speed.
+## Live Application
+
+Try the interactive traffic speed predictor:
+
+**[Launch Traffic Speed Predictor](https://freooss-bay-area-traffic.streamlit.app/)**
+
+The application uses a trained Random Forest regression model to estimate traffic speed based on traffic flow and time of day.
 
 ---
 
